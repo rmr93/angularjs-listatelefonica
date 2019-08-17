@@ -10,14 +10,14 @@
             .controller("listaTelefonicaCtrl", function ($scope) {
                 $scope.appName = "Lista Telefônica";
                 $scope.contacts = [
-                    {
-                        name: "Pedro",
-                        phone: "996475231"
-                    },
-                    {
-                        name: "Clara",
-                        phone: "996872345" 
-                    }
+                    { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 } },
+                    { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 } }
+                ];
+                $scope.carriers = [
+                    { name: "Claro", code: 21 },
+                    { name: "Oi", code: 31 },
+                    { name: "TIM", code: 41 },
+                    { name: "Vivo", code: 15 }
                 ];
                 $scope.addContact = function (contact) {
                     $scope.contacts.push(angular.copy(contact));
@@ -33,17 +33,23 @@
             <thead>
                 <th>Nome</th>
                 <th>Telefone</th>
+                <th>Operadora</th>
             </thead>
             <tbody>
                 <tr ng-repeat="contact in contacts">
                     <td>{{ contact.name }}</td>
                     <td>{{ contact.phone }}</td>
+                    <td>{{ contact.carrier.name }}</td>
                 </tr>
             </tbody>
         </table>
-        <input type="text" ng-model="contact.name" autocomplete="off" placeholder="Nome" tabindex="0" />
-        <input type="tel" ng-model="contact.phone" autocomplete="off" placeholder="Telefone" />
-        <button ng-click="addContact(contact)">Adicionar contato</button>
+        <input class="form-control mb-2" type="text" ng-model="contact.name" autocomplete="off" placeholder="Nome" tabindex="0" />
+        <input class="form-control mb-2" type="tel" ng-model="contact.phone" autocomplete="off" placeholder="Telefone" />
+        <select class="custom-select mb-3" ng-options="carrier.name for carrier in carriers" ng-model="contact.carrier">
+            <option value="">Selecione uma opção</option>
+        </select>
+        <button class="btn btn-primary" ng-click="addContact(contact)" ng-disabled="!contact.name || !contact.phone || !contact.carrier ">Adicionar contato</button>
+        <button class="btn btn-danger" ng-click="removeContacts(contacts)" ng-disabled="!isSelectedContacts()">Apagar contato</button>
     </div>
 </body>
 </html>
