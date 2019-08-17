@@ -29,8 +29,8 @@
         .controller("listaTelefonicaCtrl", function ($scope) {
             $scope.appName = "Lista Telefônica";
             $scope.contacts = [
-            { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 } },
-            { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 } }
+            { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 }, color: "red" },
+            { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 }, color: "green" }
             ];
             $scope.carriers = [
             { name: "Claro", code: 21 },
@@ -66,6 +66,7 @@
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Operadora</th>
+                <th></th>
             </thead>
             <tbody>
                 <tr ng-class="{ 'selected bold': contact.selected }" ng-repeat="contact in contacts">
@@ -73,6 +74,7 @@
                     <td>{{ contact.name }}</td>
                     <td>{{ contact.phone }}</td>
                     <td>{{ contact.carrier.name }}</td>
+                    <th><div style="width: 20px; height: 20px" ng-style="{ 'background-color': contact.color }"></div></th>
                 </tr>
             </tbody>
         </table>
