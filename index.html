@@ -86,5 +86,16 @@
         <button class="btn btn-primary" ng-click="addContact(contact)" ng-disabled="!contact.name || !contact.phone || !contact.carrier ">Adicionar contato</button>
         <button class="btn btn-danger" ng-click="removeContacts(contacts)" ng-disabled="!isSelectedContacts()">Apagar contato</button>
     </div>
+    <div ng-include="'footer.html'"></div> <!-- Attention: Doesn't work with file protocol -->
 </body>
 </html>
+
+<!--
+    ngOptions:
+        -> labelAndValue for arrayRow in array
+        -> value as label for arrayRow in array
+        -> labelAndValue group by group.value for arrayRow in array
+
+    ngHide, ngShow: Set display to none
+    ngIf: Remove element from DOM    
+-->
