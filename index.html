@@ -3,6 +3,14 @@
 <head>
     <title>Lista Telefônica</title>
     <meta charset="utf-8">
+    <style>
+        .selected {
+            background-color: yellow;
+        }
+        .bold {
+            font-weight: bold;
+        }
+    </style>
     <script src="node_modules/angular/angular.js"></script>
     <script>
         angular
@@ -31,12 +39,14 @@
         <h1>{{ appName }}</h1>
         <table>
             <thead>
+                <th></th>
                 <th>Nome</th>
                 <th>Telefone</th>
                 <th>Operadora</th>
             </thead>
             <tbody>
-                <tr ng-repeat="contact in contacts">
+                <tr ng-class="{ 'selected bold': contact.selected }" ng-repeat="contact in contacts">
+                    <td><input type="checkbox" ng-model="contact.selected" /></td>
                     <td>{{ contact.name }}</td>
                     <td>{{ contact.phone }}</td>
                     <td>{{ contact.carrier.name }}</td>
