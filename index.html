@@ -3,41 +3,54 @@
 <head>
     <title>Lista Telefônica</title>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
+        .app-name {
+            text-align: center;
+        }
+        .jumbotron {
+            width: 50%;
+            margin: 2rem auto;
+        }
         .selected {
-            background-color: yellow;
+            background-color: yellow !important;
         }
         .bold {
             font-weight: bold;
+        }
+        .fh-center {
+            align-content: center;
         }
     </style>
     <script src="node_modules/angular/angular.js"></script>
     <script>
         angular
-            .module("listaTelefonica", [])
-            .controller("listaTelefonicaCtrl", function ($scope) {
-                $scope.appName = "Lista Telefônica";
-                $scope.contacts = [
-                    { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 } },
-                    { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 } }
-                ];
-                $scope.carriers = [
-                    { name: "Claro", code: 21 },
-                    { name: "Oi", code: 31 },
-                    { name: "TIM", code: 41 },
-                    { name: "Vivo", code: 15 }
-                ];
-                $scope.addContact = function (contact) {
-                    $scope.contacts.push(angular.copy(contact));
-                    delete $scope.contact;
-                };
-            })
+        .module("listaTelefonica", [])
+        .controller("listaTelefonicaCtrl", function ($scope) {
+            $scope.appName = "Lista Telefônica";
+            $scope.contacts = [
+            { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 } },
+            { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 } }
+            ];
+            $scope.carriers = [
+            { name: "Claro", code: 21 },
+            { name: "Oi", code: 31 },
+            { name: "TIM", code: 41 },
+            { name: "Vivo", code: 15 }
+            ];
+            $scope.addContact = function (contact) {
+                $scope.contacts.push(angular.copy(contact));
+                delete $scope.contact;
+            };
+        })
     </script>
 </head>
 <body ng-controller="listaTelefonicaCtrl">
-    <div class="app">
-        <h1>{{ appName }}</h1>
-        <table>
+    <div class="jumbotron">
+        <div class="app-name mb-4">
+            <h1>{{ appName }}</h1>
+        </div>
+        <table class="table table-striped">
             <thead>
                 <th></th>
                 <th>Nome</th>
@@ -46,7 +59,7 @@
             </thead>
             <tbody>
                 <tr ng-class="{ 'selected bold': contact.selected }" ng-repeat="contact in contacts">
-                    <td><input type="checkbox" ng-model="contact.selected" /></td>
+                    <td><input class="form-check" type="checkbox" ng-model="contact.selected" /></td>
                     <td>{{ contact.name }}</td>
                     <td>{{ contact.phone }}</td>
                     <td>{{ contact.carrier.name }}</td>
