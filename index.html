@@ -2,12 +2,48 @@
 <html ng-app="listaTelefonica">
 <head>
     <title>Lista Telefônica</title>
+    <meta charset="utf-8">
     <script src="node_modules/angular/angular.js"></script>
     <script>
-        angular.module("listaTelefonica", []);
+        angular
+            .module("listaTelefonica", [])
+            .controller("listaTelefonicaCtrl", function ($scope) {
+                $scope.appName = "Lista Telefônica";
+                $scope.contacts = [
+                    {
+                        name: "Pedro",
+                        phone: "996475231"
+                    },
+                    {
+                        name: "Clara",
+                        phone: "996872345" 
+                    }
+                ];
+                $scope.addContact = function (contact) {
+                    $scope.contacts.push(angular.copy(contact));
+                    delete $scope.contact;
+                };
+            })
     </script>
 </head>
-<body>
-    
+<body ng-controller="listaTelefonicaCtrl">
+    <div class="app">
+        <h1>{{ appName }}</h1>
+        <table>
+            <thead>
+                <th>Nome</th>
+                <th>Telefone</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="contact in contacts">
+                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.phone }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <input type="text" ng-model="contact.name" autocomplete="off" placeholder="Nome" tabindex="0" />
+        <input type="tel" ng-model="contact.phone" autocomplete="off" placeholder="Telefone" />
+        <button ng-click="addContact(contact)">Adicionar contato</button>
+    </div>
 </body>
 </html>
