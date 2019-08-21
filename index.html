@@ -83,17 +83,20 @@
             <input class="form-control mb-2"
                 type="text" ng-model="contact.name"
                 autocomplete="off" placeholder="Nome"
-                tabindex="0" ng-required="true" ng-minLength="5" name="name" />
+                tabindex="0" ng-required="true"
+                ng-minLength="3" name="name" />
             <input class="form-control mb-2"
                 type="tel" ng-model="contact.phone"
                 autocomplete="off" placeholder="Telefone"
-                ng-required="true" name="phone" />
+                ng-required="true" name="phone"
+                ng-pattern="/^\d{4,5}-\d{4}$/" />
             <select class="custom-select mb-3" ng-options="carrier.name for carrier in carriers" ng-model="contact.carrier">
                 <option value="">Selecione uma opção</option>
             </select>
             <div ng-show="formContact.name.$error.required && formContact.name.$dirty" class="alert alert-danger">Por favor, preencha o nome</div>
             <div ng-show="formContact.name.$error.minlength" class="alert alert-danger">O campo nome deve ter no minímo 5 caracteres</div>
             <div ng-show="formContact.phone.$error.required && formContact.phone.$dirty" class="alert alert-danger">Por favor, preencha o telefone</div>
+            <div ng-show="formContact.phone.$error.pattern" class="alert alert-danger">O telefone é inválido</div>
         </form>
         <button class="btn btn-primary" ng-click="addContact(contact)" ng-disabled="formContact.$invalid">Adicionar contato</button>
         <button class="btn btn-danger" ng-click="removeContacts(contacts)" ng-disabled="!isSelectedContacts()">Apagar contato</button>
