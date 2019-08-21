@@ -41,6 +41,7 @@
             $scope.addContact = function (contact) {
                 $scope.contacts.push(angular.copy(contact));
                 delete $scope.contact;
+                $scope.formContact.$setPristine();
             };
             $scope.removeContacts = function (contacts) {
                 $scope.contacts = contacts.filter(function (contact) {
@@ -90,8 +91,8 @@
             <select class="custom-select mb-3" ng-options="carrier.name for carrier in carriers" ng-model="contact.carrier">
                 <option value="">Selecione uma opção</option>
             </select>
-            <div ng-show="formContact.name.$invalid" class="alert alert-danger">Por favor, preencha o nome</div>
-            <div ng-show="formContact.phone.$invalid" class="alert alert-danger">Por favor, preencha o telefone</div>
+            <div ng-show="formContact.name.$invalid && formContact.name.$dirty" class="alert alert-danger">Por favor, preencha o nome</div>
+            <div ng-show="formContact.phone.$invalid && formContact.phone.$dirty" class="alert alert-danger">Por favor, preencha o telefone</div>
         </form>
         <button class="btn btn-primary" ng-click="addContact(contact)" ng-disabled="formContact.$invalid">Adicionar contato</button>
         <button class="btn btn-danger" ng-click="removeContacts(contacts)" ng-disabled="!isSelectedContacts()">Apagar contato</button>
