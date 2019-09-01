@@ -22,21 +22,24 @@
             align-content: center;
         }
     </style>
-    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular/angular.min.js"></script>
+    <script src="lib/angular-locale_pt-br.js"></script>
+    <script src="node_modules/angular-messages/angular-messages.min.js"></script>
     <script>
         angular
-        .module("listaTelefonica", [])
+        .module("listaTelefonica", ["ngMessages"])
         .controller("listaTelefonicaCtrl", function ($scope) {
             $scope.appName = "Lista Telefônica";
             $scope.contacts = [
-                { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 }, color: "red" },
-                { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 }, color: "green" }
+                { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 }, data: new Date(), color: "red" },
+                { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 }, data: new Date(), color: "green" },
+                { name: "Mário", phone: "987956314", carrier: { name: "Oi", code: 31 }, data: new Date(), color: "pink" }
             ];
             $scope.carriers = [
-                { name: "Claro", code: 21 },
-                { name: "Oi", code: 31 },
-                { name: "TIM", code: 41 },
-                { name: "Vivo", code: 15 }
+                { name: "Claro", code: 21, priceByHour: 2 },
+                { name: "Oi", code: 31, priceByHour: 1.5 },
+                { name: "TIM", code: 41, priceByHour: 3 },
+                { name: "Vivo", code: 15, priceByHour: 2.5 }
             ];
             $scope.addContact = function (contact) {
                 $scope.contacts.push(angular.copy(contact));
@@ -52,7 +55,11 @@
                 return $scope.contacts.some(function (contact) {
                     return contact.selected;
                 });
-            }
+            };
+            $scope.orderBy = function (property) {
+                $scope.orderByProperty = property;
+                $scope.orderByDirection = !$scope.orderByDirection;
+            };
         })
     </script>
 </head>
@@ -61,20 +68,23 @@
         <div class="app-name mb-4">
             <h1>{{ appName }}</h1>
         </div>
+        <input class="form-control" type="text" ng-model="search" placeholder="O que você está buscando?">
         <table class="table table-striped">
             <thead>
                 <th></th>
-                <th>Nome</th>
-                <th>Telefone</th>
+                <th><a href="" ng-click="orderBy('name')">Nome</a></th>
+                <th><a href="" ng-click="orderBy('phone')">Telefone</a></th>
                 <th>Operadora</th>
+                <th>Data</th>
                 <th></th>
             </thead>
             <tbody>
-                <tr ng-class="{ 'selected bold': contact.selected }" ng-repeat="contact in contacts">
+                <tr ng-class="{ 'selected bold': contact.selected }" ng-repeat="contact in contacts | filter:search | orderBy:orderByProperty:orderByDirection">
                     <td><input class="form-check" type="checkbox" ng-model="contact.selected" /></td>
-                    <td>{{ contact.name }}</td>
+                    <td>{{ contact.name | uppercase }}</td>
                     <td>{{ contact.phone }}</td>
-                    <td>{{ contact.carrier.name }}</td>
+                    <td>{{ contact.carrier.name | lowercase }}</td>
+                    <td>{{ contact.data | date:'dd/MM/yyyy HH:mm' }}</td>
                     <th><div style="width: 20px; height: 20px" ng-style="{ 'background-color': contact.color }"></div></th>
                 </tr>
             </tbody>
@@ -90,14 +100,18 @@
                 autocomplete="off" placeholder="Telefone"
                 ng-required="true" name="phone"
                 ng-pattern="/^\d{4,5}-\d{4}$/" />
-            <select class="custom-select mb-3" ng-options="carrier.name for carrier in carriers" ng-model="contact.carrier">
+            <select class="custom-select mb-3" ng-options="carrier.name + ' - ' + (carrier.priceByHour | currency) for carrier in carriers | orderBy:'name'" ng-model="contact.carrier">
                 <option value="">Selecione uma opção</option>
             </select>
-            <div ng-show="formContact.name.$error.required && formContact.name.$dirty" class="alert alert-danger">Por favor, preencha o nome</div>
-            <div ng-show="formContact.name.$error.minlength" class="alert alert-danger">O campo nome deve ter no minímo 5 caracteres</div>
-            <div ng-show="formContact.phone.$error.required && formContact.phone.$dirty" class="alert alert-danger">Por favor, preencha o telefone</div>
-            <div ng-show="formContact.phone.$error.pattern" class="alert alert-danger">O telefone é inválido</div>
         </form>
+        <div ng-messages="formContact.name.$error" class="alert alert-danger">
+            <div ng-message="required">Por favor, preencha o nome</div>
+            <div ng-message="minlength">O campo nome deve ter no minímo 5 caracteres</div>
+        </div>
+        <div ng-messages="formContact.phone.$error" class="alert alert-danger">
+            <div ng-message="required">Por favor, preencha o telefone</div>
+            <div ng-message="pattern">O telefone é inválido</div>
+        </div>
         <button class="btn btn-primary" ng-click="addContact(contact)" ng-disabled="formContact.$invalid">Adicionar contato</button>
         <button class="btn btn-danger" ng-click="removeContacts(contacts)" ng-disabled="!isSelectedContacts()">Apagar contato</button>
     </div>
@@ -112,5 +126,10 @@
         -> labelAndValue group by group.value for arrayRow in array
 
     ngHide, ngShow: Set display to none
-    ngIf: Remove element from DOM    
+
+    ngIf: Remove element from DOM
+
+    ngFilter:
+        -> number: format string in number with decimal places (ex: number:2) or not 
+        -> limitTo: limit array or string by a number   
 -->
