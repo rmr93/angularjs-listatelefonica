@@ -4,64 +4,14 @@
     <title>Lista Telefônica</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <style>
-        .app-name {
-            text-align: center;
-        }
-        .jumbotron {
-            width: 50%;
-            margin: 2rem auto;
-        }
-        .selected {
-            background-color: yellow !important;
-        }
-        .bold {
-            font-weight: bold;
-        }
-        .fh-center {
-            align-content: center;
-        }
-    </style>
+    <link rel="stylesheet" href="css/app.css">
     <script src="node_modules/angular/angular.min.js"></script>
     <script src="lib/angular-locale_pt-br.js"></script>
     <script src="node_modules/angular-messages/angular-messages.min.js"></script>
-    <script>
-        angular
-        .module("listaTelefonica", ["ngMessages"])
-        .controller("listaTelefonicaCtrl", function ($scope) {
-            $scope.appName = "Lista Telefônica";
-            $scope.contacts = [
-                { name: "Pedro", phone: "996475231", carrier: { name: "Vivo", code: 15 }, data: new Date(), color: "red" },
-                { name: "Clara", phone: "996872345", carrier: { name: "Claro", code: 21 }, data: new Date(), color: "green" },
-                { name: "Mário", phone: "987956314", carrier: { name: "Oi", code: 31 }, data: new Date(), color: "pink" }
-            ];
-            $scope.carriers = [
-                { name: "Claro", code: 21, priceByHour: 2 },
-                { name: "Oi", code: 31, priceByHour: 1.5 },
-                { name: "TIM", code: 41, priceByHour: 3 },
-                { name: "Vivo", code: 15, priceByHour: 2.5 }
-            ];
-            $scope.addContact = function (contact) {
-                $scope.contacts.push(angular.copy(contact));
-                delete $scope.contact;
-                $scope.formContact.$setPristine();
-            };
-            $scope.removeContacts = function (contacts) {
-                $scope.contacts = contacts.filter(function (contact) {
-                    if (!contact.selected) return contact;
-                });
-            };
-            $scope.isSelectedContacts = function () {
-                return $scope.contacts.some(function (contact) {
-                    return contact.selected;
-                });
-            };
-            $scope.orderBy = function (property) {
-                $scope.orderByProperty = property;
-                $scope.orderByDirection = !$scope.orderByDirection;
-            };
-        })
-    </script>
+    <script src="js/app.js"></script>
+    <script src="js/controllers/listaTelefonica.controller.js"></script>
+    <script src="filters/name.filter.js"></script>
+    <script src="filters/ellipsis.filter.js"></script>
 </head>
 <body ng-controller="listaTelefonicaCtrl">
     <div class="jumbotron">
@@ -81,7 +31,7 @@
             <tbody>
                 <tr ng-class="{ 'selected bold': contact.selected }" ng-repeat="contact in contacts | filter:search | orderBy:orderByProperty:orderByDirection">
                     <td><input class="form-check" type="checkbox" ng-model="contact.selected" /></td>
-                    <td>{{ contact.name | uppercase }}</td>
+                    <td>{{ contact.name | name | ellipsis:13 }}</td>
                     <td>{{ contact.phone }}</td>
                     <td>{{ contact.carrier.name | lowercase }}</td>
                     <td>{{ contact.data | date:'dd/MM/yyyy HH:mm' }}</td>
@@ -115,21 +65,6 @@
         <button class="btn btn-primary" ng-click="addContact(contact)" ng-disabled="formContact.$invalid">Adicionar contato</button>
         <button class="btn btn-danger" ng-click="removeContacts(contacts)" ng-disabled="!isSelectedContacts()">Apagar contato</button>
     </div>
-    <div ng-include="'footer.html'"></div> <!-- Attention: Doesn't work with file protocol -->
+    <div ng-include="'view/footer.html'"></div> <!-- Attention: Doesn't work with file protocol -->
 </body>
 </html>
-
-<!--
-    ngOptions:
-        -> labelAndValue for arrayRow in array
-        -> value as label for arrayRow in array
-        -> labelAndValue group by group.value for arrayRow in array
-
-    ngHide, ngShow: Set display to none
-
-    ngIf: Remove element from DOM
-
-    ngFilter:
-        -> number: format string in number with decimal places (ex: number:2) or not 
-        -> limitTo: limit array or string by a number   
--->

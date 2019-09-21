@@ -1,0 +1,12 @@
+ngOptions:
+    -> labelAndValue for arrayRow in array
+    -> value as label for arrayRow in array
+    -> labelAndValue group by group.value for arrayRow in array
+
+ngHide, ngShow: Set display to none
+
+ngIf: Remove element from DOM
+
+ngFilter:
+    -> number: format string in number with decimal places (ex: number:2) or not 
+    -> limitTo: limit array or string by a number

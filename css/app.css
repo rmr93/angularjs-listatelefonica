@@ -1,0 +1,16 @@
+.app-name {
+    text-align: center;
+}
+.jumbotron {
+    width: 50%;
+    margin: 2rem auto;
+}
+.selected {
+    background-color: yellow !important;
+}
+.bold {
+    font-weight: bold;
+}
+.fh-center {
+    align-content: center;
+}
