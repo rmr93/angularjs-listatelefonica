@@ -1,2 +1,5 @@
-angular
-  .module('listaTelefonica', ['ngMessages'])
+angular.module('database', [])
+angular.module('listaTelefonica', [
+  'ngMessages',
+  'database'
+])
