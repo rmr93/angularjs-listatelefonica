@@ -1,22 +1,26 @@
-angular
-  .module('listaTelefonica')
-  .filter('name', name)
+(function () {
+  'use strict';
 
-function name () {
-  const ignore = [
-    'da', 'de', 'di', 'do'
-  ]
+  angular
+    .module('listaTelefonica')
+    .filter('name', name);
 
-  return function (input) {
-    var listOfNames = input.split(' ')
+  function name () {
+    var ignore = [
+      'da', 'de', 'di', 'do'
+    ];
 
-    var output = listOfNames.map(function (name) {
-      if (!ignore.includes(name)) {
-        return name.charAt(0).toUpperCase() + name.substring(1).toLowerCase()
-      }
-      return name
-    }).join(' ')
+    return function (input) {
+      var listOfNames = input.split(' ');
 
-    return output
+      var output = listOfNames.map(function (name) {
+        if (!ignore.includes(name)) {
+          return name.charAt(0).toUpperCase() + name.substring(1).toLowerCase();
+        }
+        return name;
+      }).join(' ');
+
+      return output;
+    };
   }
-}
+})();

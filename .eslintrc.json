@@ -1,20 +1,15 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
-        "es6": true
+        "commonjs": true
     },
-    "extends": [
-        "standard"
-    ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
-    "parserOptions": {
-        "ecmaVersion": 2018
-    },
     "rules": {
+        "semi": "error",
+        "no-trailing-spaces": "error"
     },
     "plugins": [
         "angular"

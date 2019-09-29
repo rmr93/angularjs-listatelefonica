@@ -1,15 +1,15 @@
 (function () {
-  'use strict'
+  'use strict';
 
   angular
     .module('database')
-    .factory('databaseMock', databaseMock)
+    .factory('databaseMock', databaseMock);
 
   function databaseMock () {
     return {
       contacts: getContacts(),
       carriers: getCarriers()
-    }
+    };
 
     function getContacts () {
       return [
@@ -43,7 +43,7 @@
           data: new Date(),
           color: 'pink'
         }
-      ]
+      ];
     }
 
     function getCarriers () {
@@ -68,7 +68,7 @@
           code: 15,
           priceByHour: 2.5
         }
-      ]
+      ];
     }
   }
-})()
+})();
